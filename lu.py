@@ -8,8 +8,9 @@ def lu(sistema: Sistema):
     eliminacao(sistema,False,True)
     sistema.u = sistema.a
 
-    es.imprimir_matriz(sistema.l,'L:')
     es.imprimir_matriz(sistema.u, 'U:')
+    es.imprimir_matriz(sistema.l,'L:')
+    
 
 
 

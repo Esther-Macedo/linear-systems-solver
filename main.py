@@ -1,6 +1,5 @@
 from Sistema import Sistema
-from gauss import gauss
-from gauss_pivoteamento_simples import gauss_pivoteamento_simples
+from gauss import gauss, gauss_pivoteamento_parcial
 from lu import lu
 import es
 
@@ -14,7 +13,7 @@ def main():
     
 
     while running:
-        comando = input();
+        comando = input()
 
         match comando:
             case 'a':
@@ -26,7 +25,7 @@ def main():
             case 's':
                 gauss(sistema)
             case 'r':
-                gauss_pivoteamento_simples(sistema)
+                gauss_pivoteamento_parcial(sistema)
             
             case 'l':
                 lu(sistema)

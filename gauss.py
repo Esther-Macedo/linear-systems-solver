@@ -33,6 +33,41 @@ def eliminacao(sistema: Sistema, isConstantes:bool = True, isFatoracao = False):
 
 def eliminacao_pivoteamento_parcial(sistema: Sistema):
     '''executa eliminação de gauss com pivoteamento parcial'''
+    tamanho = sistema.tam()
+    print('in elimination')
+    
+    for linha_pivo in range(tamanho-1):
+
+        print(f'linha do pivo: {linha_pivo}')
+        #checa a linha onde está o maior numero da coluna 
+        linha_maior= sistema.posicao_coef_max_coluna(linha_pivo, linha_pivo)
+        print(f'maior da coluna {linha_pivo}: {linha_maior}')
+        #se a linha diferente do que 
+        if linha_pivo != linha_maior:
+            sistema.trocar_linhas(linha_pivo, linha_maior)
+            print('troca')
+            print(sistema.a)
+            print(sistema.c)
+
+
+        
+        print('eliminando')
+        for  i in range (linha_pivo+1,tamanho):
+            print(f'linha eliminação: {i}')
+            
+            m = sistema.a[i][linha_pivo]/sistema.a[linha_pivo][linha_pivo]
+
+
+            for j in range(linha_pivo, tamanho):
+                sistema.a[i][j]= sistema.a[i][j] - m*sistema.a[linha_pivo][j]
+
+       
+            sistema.c[i]= sistema.c[i] - m*sistema.c[linha_pivo]
+        print(sistema.a)
+        print(sistema.c)
+
+
+
 
 
 def solve(sistema: Sistema):
@@ -56,7 +91,7 @@ def solve(sistema: Sistema):
                     print(sum)
     
                 sistema.x[i]= (sistema.c[i]-sum)/sistema.a[i][i]
-    print(sistema.x)
+        print(sistema.x)
 
            
 
@@ -69,7 +104,6 @@ def solve(sistema: Sistema):
 #         sum+=solve_recursivo(sistema, i-1)
 #         x[i]= 
 
-
 def gauss(sistema: Sistema):
     print('in gauss')
 
@@ -81,6 +115,9 @@ def gauss(sistema: Sistema):
     es.imprimir_solucao(sistema)
 
 
-
-
-
+def gauss_pivoteamento_parcial(sistema: Sistema):
+    print('in pvp')
+    eliminacao_pivoteamento_parcial(sistema)
+    sistema.solved= True
+    solve(sistema)
+    es.imprimir_solucao(sistema)
