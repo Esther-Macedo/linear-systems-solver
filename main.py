@@ -2,26 +2,27 @@ from Sistema import Sistema
 from gauss import gauss
 from gauss_pivoteamento_simples import gauss_pivoteamento_simples
 from lu import lu
+import es
 
 def main():
     '''função principal do programa'''
-    sistema = Sistema()
+    sistema = Sistema.__new__(Sistema)
 
 
     running = True
 
-    sistema =  Sistema()
+    
 
     while running:
         comando = input();
 
         match comando:
             case 'a':
-                sistema.preencher_coeficientes()
+                es.preencher_coeficientes(sistema)   
             case 'c':
-                sistema.preencher_constantes()
+                es.preencher_constantes(sistema)
             case 'p':
-                sistema.imprimir()
+                es.imprimir_sistema(sistema)
             case 's':
                 gauss(sistema)
             case 'r':
@@ -30,8 +31,6 @@ def main():
             case 'l':
                 lu(sistema)
 
-            case 'swap':
-                sistema.trocar(1,2)
             case 'e':
                 running = False
                 break
