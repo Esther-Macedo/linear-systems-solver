@@ -52,8 +52,12 @@ def imprimir_solucao(sistema: Sistema):
         for i in range(len(sistema.x)):
             print(f'x{i+1}: {sistema.x[i]: .2f}')
 
-def imprimir_l(sistema: Sistema):
-    '''imprime matriz l de um sistema'''
-
-
-
+def imprimir_matriz(lista: list,label = None):
+    '''imprime  de uma lista de lista'''
+    if label:
+        print(label)
+    tam = len(lista)
+    for linha in lista:
+        print(" ".join(f'{n:.2f}' for n in linha ))
+        
+            

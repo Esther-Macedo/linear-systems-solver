@@ -16,6 +16,16 @@ class Sistema:
         '''inicializa vetor solução com 0 e tamanho correspontendo ao tamanho do sistema'''
         self.x = [0]*(self.tam()) 
 
+    def inicializar_matriz_l(self):
+        '''inicializa a matrizes L'''
+        tam = self.tam()
+        self.l=[]
+        for i in range(tam):
+            linha=[0]*tam
+            linha[i]=1
+            self.l.append(linha)
+
+
 
     def tam(self)-> int: 
         '''retorna tamanho do sistema. Como o sistema será sempre quadrado retorna o nº de colunas'''

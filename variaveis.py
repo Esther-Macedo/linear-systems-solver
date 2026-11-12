@@ -1,2 +1,0 @@
-coeficientes = []
-constantes = []

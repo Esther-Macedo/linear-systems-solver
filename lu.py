@@ -1,17 +1,16 @@
 from Sistema import Sistema
 from gauss import eliminacao
+import es 
 
 def lu(sistema: Sistema):
     print("implementar lu")
+    sistema.inicializar_matriz_l()
+    eliminacao(sistema,False,True)
+    sistema.u = sistema.a
+
+    es.imprimir_matriz(sistema.l,'L:')
+    es.imprimir_matriz(sistema.u, 'U:')
 
 
-def l(sistema: Sistema):
-    n = sistema.tam()
-    # for linha_pivo in range (n):
-
-
-def u(sistema: Sistema):
-
-    eliminacao(sistema, False, True )
 
 

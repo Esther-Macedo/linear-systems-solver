@@ -3,7 +3,7 @@ from Sistema import Sistema
 import es
 
 def eliminacao(sistema: Sistema, isConstantes:bool = True, isFatoracao = False):
-    '''faz a eliminação de gauss'''
+    '''faz a eliminação de gauss ou preenche a matriz L dependo dos parametros'''
 
     tamanho = sistema.tam()
     print('in elimination')
@@ -15,16 +15,16 @@ def eliminacao(sistema: Sistema, isConstantes:bool = True, isFatoracao = False):
             print(i)
             print(sistema.a)
             print(sistema.c)
-            u = sistema.a[i][linha_pivo]/sistema.a[linha_pivo][linha_pivo]
+            m = sistema.a[i][linha_pivo]/sistema.a[linha_pivo][linha_pivo]
 
             if isFatoracao:
-                sistema.l[i][linha_pivo]=u
+                sistema.l[i][linha_pivo]=m
 
             for j in range(linha_pivo, tamanho):
-                sistema.a[i][j]= sistema.a[i][j] - u*sistema.a[linha_pivo][j]
+                sistema.a[i][j]= sistema.a[i][j] - m*sistema.a[linha_pivo][j]
 
             if isConstantes:
-                sistema.c[i]= sistema.c[i] - u*sistema.c[linha_pivo]
+                sistema.c[i]= sistema.c[i] - m*sistema.c[linha_pivo]
     print('A:')
     print(sistema.a)
     print('C:')
