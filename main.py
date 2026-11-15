@@ -1,5 +1,5 @@
 from Sistema import Sistema
-from gauss import gauss, gauss_pivoteamento_parcial
+from gauss import gauss, gauss_parcial
 from lu import lu
 import es
 
@@ -10,7 +10,6 @@ def main():
 
     running = True
 
-    
 
     while running:
         comando = input()
@@ -25,11 +24,9 @@ def main():
             case 's':
                 gauss(sistema)
             case 'r':
-                gauss_pivoteamento_parcial(sistema)
-            
+                gauss_parcial(sistema)
             case 'l':
                 lu(sistema)
-
             case 'e':
                 running = False
                 break

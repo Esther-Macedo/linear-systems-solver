@@ -3,21 +3,19 @@ from dataclasses import dataclass
 @dataclass
 class Sistema:
     '''Classe para guardar valores dos sistema'''
-    a_original: list
-    c_original: list
-    a: list #copia da matriz de coeficientes
+    a: list 
     c: list
-    x: list #solução
+    x: list
     l: list #matriz L
     u: list #matriz U
-    solved: bool = False #marca se um sistema já passou por aluguma solução
+    resolvido: bool = False #marca se o sistema já foi resilvido
 
     def inicializar_vetor_solucao(self):
         '''inicializa vetor solução com 0 e tamanho correspondendo ao tamanho do sistema'''
         self.x = [0]*(self.tam()) 
 
     def inicializar_matriz_l(self):
-        '''inicializa a matriz L'''
+        '''inicializa a matriz L como uma matriz identidade'''
         tam = self.tam()
         self.l=[]
         for i in range(tam):
@@ -32,19 +30,18 @@ class Sistema:
 
             
     def posicao_coef_max_coluna(self, linha_inicial:int, coluna:int )->int:
-        '''retorna a linha do maior numero de uma subcoluna da matriz de coeficientes'''
-        print(f'linha_inicial: {linha_inicial}')
-        print(f'coluna: {coluna}')
-        if linha_inicial< self.tam():
-            primeiros = []
-            for i in range (linha_inicial, self.tam()):
-                primeiros.append(abs(self.a[i][coluna]))
-            print(f'coletados:{primeiros}')
-            maximo= max(primeiros)
-            print(f'max:{maximo}')
+        '''retorna a linha do maior coeficiente em módulo de uma subcoluna da matriz de coeficientes'''
 
-            pos= primeiros.index(maximo)
-            print(f'pos: {pos}')
+        if linha_inicial< self.tam():
+            coeficientes_coluna = []
+            #começa a apartir da linha passada como parametro
+            for i in range (linha_inicial, self.tam()): 
+                 #coleta os coeficientes da coluna
+                coeficientes_coluna.append(abs(self.a[i][coluna]))
+        
+            maximo= max(coeficientes_coluna)
+            pos= coeficientes_coluna.index(maximo)
+    
             return pos+linha_inicial
 
 

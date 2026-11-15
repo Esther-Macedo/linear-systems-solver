@@ -2,122 +2,79 @@
 from Sistema import Sistema
 import es
 
-def eliminacao(sistema: Sistema, isConstantes:bool = True, isFatoracao = False):
+def pivoteamento_parcial(sistema:Sistema, linha_pivo:int):
+    '''efetua a troca de linhas do pivoteamento parcial'''
+    
+    #checa a linha onde está o maior numero da coluna 
+    linha_maior= sistema.posicao_coef_max_coluna(linha_pivo, linha_pivo)
+   
+    #se a linha diferente do que 
+    if linha_pivo != linha_maior:
+        sistema.trocar_linhas(linha_pivo, linha_maior)
+        
+
+def eliminacao(sistema: Sistema, isParcial: bool = False, isFatoracao:bool = False):
     '''faz a eliminação de gauss ou preenche a matriz L dependo dos parametros'''
 
     tamanho = sistema.tam()
-    print('in elimination')
+    
     
     for linha_pivo in range(tamanho-1):
-        print('linha do pivo: ', linha_pivo )
+        
+
+        if isParcial:
+            pivoteamento_parcial(sistema,linha_pivo)
+
         
         for  i in range (linha_pivo+1,tamanho):
-            print(i)
-            print(sistema.a)
-            print(sistema.c)
+    
+            #calcula multiplicador
             m = sistema.a[i][linha_pivo]/sistema.a[linha_pivo][linha_pivo]
 
             if isFatoracao:
+                #preeenche a matriz L com os multiplicadores caso 
                 sistema.l[i][linha_pivo]=m
 
+            #faz a operação de linhas Li - m*Lpivô 
             for j in range(linha_pivo, tamanho):
                 sistema.a[i][j]= sistema.a[i][j] - m*sistema.a[linha_pivo][j]
 
-            if isConstantes:
+            #faz o peração de linha no vetor de constantes se não for fatoração LU
+            if not isFatoracao:
                 sistema.c[i]= sistema.c[i] - m*sistema.c[linha_pivo]
-    print('A:')
-    print(sistema.a)
-    print('C:')
-    print(sistema.c)
 
 
-def eliminacao_pivoteamento_parcial(sistema: Sistema):
-    '''executa eliminação de gauss com pivoteamento parcial'''
-    tamanho = sistema.tam()
-    print('in elimination')
+def resolver(sistema: Sistema):
+    '''calcula lista de solução de um sistema triangular'''
     
-    for linha_pivo in range(tamanho-1):
-
-        print(f'linha do pivo: {linha_pivo}')
-        #checa a linha onde está o maior numero da coluna 
-        linha_maior= sistema.posicao_coef_max_coluna(linha_pivo, linha_pivo)
-        print(f'maior da coluna {linha_pivo}: {linha_maior}')
-        #se a linha diferente do que 
-        if linha_pivo != linha_maior:
-            sistema.trocar_linhas(linha_pivo, linha_maior)
-            print('troca')
-            print(sistema.a)
-            print(sistema.c)
-
-
-        
-        print('eliminando')
-        for  i in range (linha_pivo+1,tamanho):
-            print(f'linha eliminação: {i}')
-            
-            m = sistema.a[i][linha_pivo]/sistema.a[linha_pivo][linha_pivo]
-
-
-            for j in range(linha_pivo, tamanho):
-                sistema.a[i][j]= sistema.a[i][j] - m*sistema.a[linha_pivo][j]
-
-       
-            sistema.c[i]= sistema.c[i] - m*sistema.c[linha_pivo]
-        print(sistema.a)
-        print(sistema.c)
-
-
-
-
-
-def solve(sistema: Sistema):
-    '''calcula lista de solução do sistema'''
-    print('in solve')
-    if sistema.solved:
+    if sistema.resolvido:
 
         tam = sistema.tam()      
         sistema.inicializar_vetor_solucao()
-        # sistema.x[tam-1]= sistema.c[tam-1]/sistema.a[tam-1][tam-1]
-    
-       
-    
-        if sistema.solved:
-            for i in range(tam-1, -1, -1):
-                print('na linha:', i)
-                sum=0
-                for j in range(tam-1,i,-1):
-                    print('na coluna', j)
-                    sum+= sistema.a[i][j]*sistema.x[j]
-                    print(sum)
-    
-                sistema.x[i]= (sistema.c[i]-sum)/sistema.a[i][i]
-        print(sistema.x)
+        #acessa matriz de baixo pra cima para comecar do ultimo x
+        for i in range(tam-1, -1, -1):
+            
+            sum=0
+            for j in range(tam-1,i,-1):
+        
+                #substituição dos valores xn já descobertos da linha e soma 
+                sum+= sistema.a[i][j]*sistema.x[j]
+                
 
-           
+            #isola o xi
+            sistema.x[i]= (sistema.c[i]-sum)/sistema.a[i][i]
 
-# def solve_recursivo(sistema: Sistema, i:int):
-#     sum=0
-#     if i == sistema.tam() - 1:
-#         sistema.x[i] = sistema.c[i]/sistema.a[i][i]
-
-#     elif i >= 0:
-#         sum+=solve_recursivo(sistema, i-1)
-#         x[i]= 
 
 def gauss(sistema: Sistema):
-    print('in gauss')
-
+    
     eliminacao(sistema)
-    sistema.solved = True
-    solve(sistema)
-    print('A')
-    print(sistema.a)
+    sistema.resolvido = True
+    resolver(sistema)
     es.imprimir_solucao(sistema)
 
-
-def gauss_pivoteamento_parcial(sistema: Sistema):
-    print('in pvp')
-    eliminacao_pivoteamento_parcial(sistema)
-    sistema.solved= True
-    solve(sistema)
+def gauss_parcial(sistema: Sistema):
+    
+    eliminacao(sistema,True)
+    sistema.resolvido=True
+    resolver(sistema)
     es.imprimir_solucao(sistema)
